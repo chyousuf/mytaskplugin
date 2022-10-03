@@ -55,19 +55,11 @@ class AdminPages extends BaseController
         $this->subpages = array(
             array(
                 'parent_slug' => 'MyTask_plugin',
-                'page_title' => 'Custom Post Types',
-                'menu_title' => 'CPT',
-                'capability' => 'manage_options',
-                'menu_slug' => 'MyTask_cpt',
-                'callback' => array($this->callbacks, 'adminCpt')
-            ),
-            array(
-                'parent_slug' => 'MyTask_plugin',
                 'page_title' => 'Plugin Activation',
                 'menu_title' => 'Plugin Activation',
                 'capability' => 'manage_options',
                 'menu_slug' => 'MyTask_plugin_activation',
-                'callback' => array($this->callbacks, 'adminTaxonomy')
+                'callback' => array($this->callbacks, 'adminApiKey')
             )
         );
     }

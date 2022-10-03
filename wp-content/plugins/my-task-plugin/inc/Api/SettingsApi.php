@@ -77,16 +77,15 @@ class SettingsApi
 
     public  function my_task_register_settings()
     {
-        register_setting('my_task_plugin_options', 'my_task_plugin_options', 'my_task_plugin_options_validate');
-        add_settings_section('api_settings', 'API Settings', '', 'my_task_plugin');
+        register_setting('my_task_api_key_plugin_options', 'my_task_api_key_plugin_options', array($this, 'my_task_api_key_plugin_options_validate'));
+        add_settings_section('api_settings', 'API Settings', array($this, 'my_task_plugin_section_text'), 'my_task_plugin');
 
-        add_settings_field('my_task_plugin_setting_api_key', 'API Key', 'my_task_plugin_setting_api_key', 'my_task_plugin', 'api_settings');
-        add_settings_field('my_task_plugin_setting_results_limit', 'Results Limit', 'my_task_plugin_setting_results_limit', 'my_task_plugin', 'api_settings');
-        add_settings_field('my_task_plugin_setting_start_date', 'Start Date', 'my_task_plugin_setting_start_date', 'my_task_plugin', 'api_settings');
+        add_settings_field('my_task_plugin_setting_api_key', 'API Key', array($this, 'my_task_plugin_setting_api_key'), 'my_task_plugin', 'api_settings');
     }
 
-    public function my_task_plugin_options_validate($input)
+    public function my_task_api_key_plugin_options_validate($input)
     {
+        var_dump($input);
         $newinput['api_key'] = trim($input['api_key']);
         if (!preg_match('/^[a-z0-9]{32}$/i', $newinput['api_key'])) {
             $newinput['api_key'] = '';
@@ -95,26 +94,15 @@ class SettingsApi
         return $newinput;
     }
 
-    // public  function my_task_plugin_section_text()
-    // {
-    //     echo '<p>Here you can set all the options for using the API</p>';
-    // }
+    public  function my_task_plugin_section_text()
+    {
+        echo '<p>Here you can set up the Plugin Activation Key!</p>';
+    }
 
     public  function my_task_plugin_setting_api_key()
     {
-        $options = get_option('my_task_plugin_options');
-        echo "<input id='my_task_plugin_setting_api_key' name='my_task_plugin_options[api_key]' type='text' value='" . esc_attr($options['api_key']) . "' />";
-    }
-
-    public  function my_task_plugin_setting_results_limit()
-    {
-        $options = get_option('my_task_plugin_options');
-        echo "<input id='my_task_plugin_setting_results_limit' name='my_task_plugin_options[results_limit]' type='text' value='" . esc_attr($options['results_limit']) . "' />";
-    }
-
-    public function my_task_plugin_setting_start_date()
-    {
-        $options = get_option('my_task_plugin_options');
-        echo "<input id='my_task_plugin_setting_start_date' name='my_task_plugin_options[start_date]' type='text' value='" . esc_attr($options['start_date']) . "' />";
+        $options = get_option('my_task_api_key_plugin_options');
+        isset($options) ? $options : '';
+        echo "<input id='my_task_plugin_setting_api_key' size='43' name='my_task_api_key_plugin_options[api_key]' type='text' value='" . esc_attr($options['api_key']) . "' />";
     }
 }
