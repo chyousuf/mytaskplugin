@@ -90,17 +90,15 @@ class SettingsApi
     //License_key
     public function my_task_License_key_plugin_options_validate($input)
     {
-        if(
-            ! isset( $_POST['awesome_form'] ) ||
-            ! wp_verify_nonce( $_POST['awesome_form'], 'awesome_update' )
-        ){  
-            add_settings_error( 'general', 'settings_updated', __( "Sorry, your nonce was not correct. Please try again." ), 'error' );
-          
+        if (
+            !isset($_POST['awesome_form']) ||
+            !wp_verify_nonce($_POST['awesome_form'], 'awesome_update')
+        ) {
+            add_settings_error('general', 'settings_updated', __("Sorry, your nonce was not correct. Please try again."), 'error');
         } else {
             // Handle our form data
             return $input;
         }
-      
     }
 
     public  function my_task_plugin_section_text()
@@ -112,31 +110,28 @@ class SettingsApi
     {
         $options = get_option('my_task_License_key_plugin_options');
         // var_dump($options['License_key']);exit;
-        if(!empty($options['License_key'])) {
-           $License_key = esc_attr($options['License_key']);
+        if (!empty($options['License_key'])) {
+            $License_key = esc_attr($options['License_key']);
+        } else {
+            $License_key = '';
         }
-        else {
-            $License_key ='';
-        }
-        echo "<input id='my_task_plugin_setting_License_key' size='43' name='my_task_License_key_plugin_options[License_key]' required='required' type='text' value='" .$License_key . "' />";
+        echo "<input id='my_task_plugin_setting_License_key' size='43' name='my_task_License_key_plugin_options[License_key]' required='required' type='text' value='" . $License_key . "' />";
     }
-     //License_key
+    //License_key
 
 
-     //sheet field
+    //sheet field
     public function my_task_sheet_field_plugin_options_validate($input)
     {
-        if(
-            ! isset( $_POST['awesome_form'] ) ||
-            ! wp_verify_nonce( $_POST['awesome_form'], 'awesome_update' )
-        ){  
-            add_settings_error( 'general', 'settings_updated', __( "Sorry, your nonce was not correct. Please try again." ), 'error' );
-          
+        if (
+            !isset($_POST['awesome_form']) ||
+            !wp_verify_nonce($_POST['awesome_form'], 'awesome_update')
+        ) {
+            add_settings_error('general', 'settings_updated', __("Sorry, your nonce was not correct. Please try again."), 'error');
         } else {
             // Handle our form data
             return $input;
         }
-      
     }
 
     public  function my_task_plugin_section_text_sheet_field()
@@ -146,17 +141,27 @@ class SettingsApi
 
     public  function my_task_plugin_setting_sheet_field()
     {
-        
+
         $options = get_option('my_task_sheet_field_plugin_options');
-        $options['sheet_field']  = array();
+        // $options['sheet_field']  = array();
         // var_dump($options['sheet_field']);exit;
-        if(!empty($options['sheet_field'])) {
-           $sheet_field = esc_attr($options['sheet_field']);
+        if (!empty($options['sheet_field'])) {
+            $sheet_field = esc_attr($options['sheet_field'][0]);
+        } else {
+            $sheet_field = '';
         }
-        else {
-            $sheet_field ='';
+        echo "<input id='my_task_sheet_field' size='100' name='my_task_sheet_field_plugin_options[sheet_field][]' required='required' type='text' value='" . $sheet_field . "' /> <input type='button' id='add_more_sheet_fields' class='button button-primary' value='Add More Sheet Fields'/><br><div id='new_sheet_field'></div><input id='number_of_fields'  type='hidden' value='" . count($options['sheet_field']) . "'/>";
+
+        if (sizeof($options['sheet_field']) > 1) {
+            $i = 1;
+            foreach ($options['sheet_field'] as $key => $value) {
+                if ($i != 1) {
+                    echo  '<div id="my_task_sheet_field-' . $key . '"><br><input  size="100" name="my_task_sheet_field_plugin_options[sheet_field][]" required="required" type="text" value="' . $value . '"></input><a 
+                     class="delete-btn-class" ><input type="hidden" id="values" value="' . $key . '"/><span class="dashicons dashicons-trash"></span></a><br></div>';
+                }
+                $i++;
+            }
         }
-        echo "<input id='my_task_sheet_field' size='100' name='my_task_sheet_field_plugin_options[sheet_field][]' required='required' type='text' value='" .$sheet_field . "' /> <input type='button' id='add_more_sheet_fields' class='button button-primary' value='Add More Sheet Fields'/><br><div id='new_sheet_field'></div>";
     }
     //sheet field
 }
