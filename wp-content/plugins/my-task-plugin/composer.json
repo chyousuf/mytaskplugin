@@ -1,5 +1,7 @@
 {
-    "require": {},
+    "require": {
+        "google/apiclient": "^2.12"
+    },
     "autoload": {
         "psr-4": {
             "inc\\": "./inc"
