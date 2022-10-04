@@ -77,21 +77,30 @@ class SettingsApi
 
     public  function my_task_register_settings()
     {
-        register_setting('my_task_api_key_plugin_options', 'my_task_api_key_plugin_options', array($this, 'my_task_api_key_plugin_options_validate'));
-        add_settings_section('api_settings', 'API Settings', array($this, 'my_task_plugin_section_text'), 'my_task_plugin');
+        //License_key
+        register_setting('my_task_License_key_plugin_options', 'my_task_License_key_plugin_options', array($this, 'my_task_License_key_plugin_options_validate'));
+        add_settings_section('License_settings', 'License Settings', array($this, 'my_task_plugin_section_text'), 'my_task_plugin');
+        add_settings_field('my_task_plugin_setting_License_key', 'License Key', array($this, 'my_task_plugin_setting_License_key'), 'my_task_plugin', 'License_settings');
+        //sheet field
+        register_setting('my_task_sheet_field_plugin_options', 'my_task_sheet_field_plugin_options', array($this, 'my_task_sheet_field_plugin_options_validate'));
+        add_settings_section('sheet_field_settings', 'Sheet Fields Settings', array($this, 'my_task_plugin_section_text_sheet_field'), 'my_task_sheet_field_plugin');
 
-        add_settings_field('my_task_plugin_setting_api_key', 'API Key', array($this, 'my_task_plugin_setting_api_key'), 'my_task_plugin', 'api_settings');
+        add_settings_field('my_task_plugin_setting_sheet_field', 'Sheet Field', array($this, 'my_task_plugin_setting_sheet_field'), 'my_task_sheet_field_plugin', 'sheet_field_settings');
     }
-
-    public function my_task_api_key_plugin_options_validate($input)
+    //License_key
+    public function my_task_License_key_plugin_options_validate($input)
     {
-        var_dump($input);
-        $newinput['api_key'] = trim($input['api_key']);
-        if (!preg_match('/^[a-z0-9]{32}$/i', $newinput['api_key'])) {
-            $newinput['api_key'] = '';
+        if(
+            ! isset( $_POST['awesome_form'] ) ||
+            ! wp_verify_nonce( $_POST['awesome_form'], 'awesome_update' )
+        ){  
+            add_settings_error( 'general', 'settings_updated', __( "Sorry, your nonce was not correct. Please try again." ), 'error' );
+          
+        } else {
+            // Handle our form data
+            return $input;
         }
-
-        return $newinput;
+      
     }
 
     public  function my_task_plugin_section_text()
@@ -99,10 +108,55 @@ class SettingsApi
         echo '<p>Here you can set up the Plugin Activation Key!</p>';
     }
 
-    public  function my_task_plugin_setting_api_key()
+    public  function my_task_plugin_setting_License_key()
     {
-        $options = get_option('my_task_api_key_plugin_options');
-        isset($options) ? $options : '';
-        echo "<input id='my_task_plugin_setting_api_key' size='43' name='my_task_api_key_plugin_options[api_key]' type='text' value='" . esc_attr($options['api_key']) . "' />";
+        $options = get_option('my_task_License_key_plugin_options');
+        // var_dump($options['License_key']);exit;
+        if(!empty($options['License_key'])) {
+           $License_key = esc_attr($options['License_key']);
+        }
+        else {
+            $License_key ='';
+        }
+        echo "<input id='my_task_plugin_setting_License_key' size='43' name='my_task_License_key_plugin_options[License_key]' required='required' type='text' value='" .$License_key . "' />";
     }
+     //License_key
+
+
+     //sheet field
+    public function my_task_sheet_field_plugin_options_validate($input)
+    {
+        if(
+            ! isset( $_POST['awesome_form'] ) ||
+            ! wp_verify_nonce( $_POST['awesome_form'], 'awesome_update' )
+        ){  
+            add_settings_error( 'general', 'settings_updated', __( "Sorry, your nonce was not correct. Please try again." ), 'error' );
+          
+        } else {
+            // Handle our form data
+            return $input;
+        }
+      
+    }
+
+    public  function my_task_plugin_section_text_sheet_field()
+    {
+        echo '<p>Here you can set up the Google Sheets Links!</p>';
+    }
+
+    public  function my_task_plugin_setting_sheet_field()
+    {
+        
+        $options = get_option('my_task_sheet_field_plugin_options');
+        $options['sheet_field']  = array();
+        // var_dump($options['sheet_field']);exit;
+        if(!empty($options['sheet_field'])) {
+           $sheet_field = esc_attr($options['sheet_field']);
+        }
+        else {
+            $sheet_field ='';
+        }
+        echo "<input id='my_task_sheet_field' size='100' name='my_task_sheet_field_plugin_options[sheet_field][]' required='required' type='text' value='" .$sheet_field . "' /> <input type='button' id='add_more_sheet_fields' class='button button-primary' value='Add More Sheet Fields'/><br><div id='new_sheet_field'></div>";
+    }
+    //sheet field
 }

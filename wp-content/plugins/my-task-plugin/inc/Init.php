@@ -14,7 +14,6 @@ final class Init
         return [
             Pages\AdminPages::class,
             Base\Enqueue::class,
-            Base\CustomPostType::class,
             Base\SettingLinks::class,
         ];
     }
