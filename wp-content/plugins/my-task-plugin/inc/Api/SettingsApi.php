@@ -157,16 +157,22 @@ class SettingsApi
         } else {
             $sheet_field = '';
         }
-        echo "<input id='my_task_sheet_field' size='100' name='my_task_sheet_field_plugin_options[sheet_field][]' required='required' type='text' value='" . $sheet_field . "' /> <input type='button' id='add_more_sheet_fields' class='button button-primary' value='Add More Sheet Fields'/><br><div id='new_sheet_field'></div><input id='number_of_fields'  type='hidden' value='" . count($options['sheet_field']) . "'/>";
-
-        if (sizeof($options['sheet_field']) > 1) {
-            $i = 1;
-            foreach ($options['sheet_field'] as $key => $value) {
-                if ($i != 1) {
-                    echo  '<div id="my_task_sheet_field-' . $key . '"><br><input  size="100" name="my_task_sheet_field_plugin_options[sheet_field][]" required="required" type="text" value="' . $value . '"></input><a 
+        if ($options != false) {
+            $count = count($options['sheet_field']);
+        } else {
+            $count = 0;
+        }
+        echo "<input id='my_task_sheet_field' size='100' name='my_task_sheet_field_plugin_options[sheet_field][]' required='required' type='text' value='" . $sheet_field . "' /> <input type='button' id='add_more_sheet_fields' class='button button-primary' value='Add More Sheet Fields'/><br><div id='new_sheet_field'></div><input id='number_of_fields'  type='hidden' value='" . $count . "'/>";
+        if ($options != false) {
+            if (sizeof($options['sheet_field']) > 1) {
+                $i = 1;
+                foreach ($options['sheet_field'] as $key => $value) {
+                    if ($i != 1) {
+                        echo  '<div id="my_task_sheet_field-' . $key . '"><br><input  size="100" name="my_task_sheet_field_plugin_options[sheet_field][]" required="required" type="text" value="' . $value . '"></input><a 
                      class="delete-btn-class" ><input type="hidden" id="values" value="' . $key . '"/><span class="dashicons dashicons-trash"></span></a><br></div>';
+                    }
+                    $i++;
                 }
-                $i++;
             }
         }
     }
