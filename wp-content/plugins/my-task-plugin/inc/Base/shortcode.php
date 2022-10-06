@@ -14,8 +14,14 @@ function google_spread_sheet_api($spread_sheet_Id, $spread_sheet_name, $spread_s
     $service = new \Google_Service_Sheets($client);
 
     // the spreadsheet id can be found in the url https://docs.google.com/spreadsheets/d/143xVs9lPopFSF4eJQWloDYAndMor/edit
-    $spreadsheetId = $spread_sheet_Id;
-    $spreadsheet = $service->spreadsheets->get($spreadsheetId);
+    try {
+        $spreadsheetId = $spread_sheet_Id;
+        $spreadsheet = $service->spreadsheets->get($spreadsheetId);
+    }
+    //catch exception
+    catch (Exception $e) {
+        echo 'Message: Requested entity was not found <br>';
+    }
     // get all the rows of a sheet
     if (!empty($spread_sheet_Range)) {
         $range = $spread_sheet_name . '!' . $spread_sheet_Range;
@@ -49,7 +55,6 @@ if (!is_admin()) {
     add_shortcode('cm', 'shortcode_sheet_callback_function');
     function shortcode_sheet_callback_function($atts)
     {
-
         // Spread Sheet ID
         $options = get_option('my_task_sheet_field_plugin_options');
         if (isset($atts['spread_sheet_filed_id']) && !empty($atts['spread_sheet_filed_id'])) {
@@ -80,13 +85,23 @@ if (!is_admin()) {
         // Spread Sheet Range
         if (isset($atts['spread_sheet_range']) && !empty($atts['spread_sheet_range'])) {
             $spread_sheet_Range = $atts['spread_sheet_range'];
+        } else {
+            $spread_sheet_Range = '';
+        }
+
+        // Spread Sheet Range
+        // Spread Sheet Range
+        if (isset($atts['major_dimension']) && !empty($atts['major_dimension'])) {
+            $major_dimension = $atts['major_dimension'];
+        } else {
+            $major_dimension = 'COLUMNS';
         }
 
         // Spread Sheet Range
         extract(shortcode_atts(array(
             'spread_sheet_Id' => $spread_sheet_Id,
             'spread_sheet_name' => $spread_sheet_name,
-            'sheet_Range' => $spread_sheet_Range
+            'spread_sheet_range' => $spread_sheet_Range
         ), $atts));
 
         google_spread_sheet_api($spread_sheet_Id, $spread_sheet_name, $spread_sheet_Range);

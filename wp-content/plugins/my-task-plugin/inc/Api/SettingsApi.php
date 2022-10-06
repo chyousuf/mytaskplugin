@@ -103,7 +103,7 @@ class SettingsApi
 
     public  function my_task_plugin_section_text()
     {
-        echo '<p>Here you can set up the Plugin Activation Key!</p>';
+        echo '<p>Here you can set up the Plugin Activation Key!</p><br>';
     }
 
     public  function my_task_plugin_setting_License_key()
@@ -136,7 +136,14 @@ class SettingsApi
 
     public  function my_task_plugin_section_text_sheet_field()
     {
-        echo '<p>Here you can set up the Google Sheets Links!</p>';
+
+        $html = '<p>Here you can set up the Google Sheets Links!</p>
+        <h3>Only Need To Add Unique key of Spread Sheet</h3>
+        <h4>Example</h4>
+        <p>https://docs.google.com/spreadsheets/d/1PHEBOLeNfjvx1DVcry8ui95AaK_MfX0bK6GoKcJPYYU/edit#gid=927060094</p>
+        You only need to add in Field <span style="background-color:yellow;"> 1PHEBOLeNfjvx1DVcry8ui95AaK_MfX0bK6GoKcJPYYU </span>
+        ';
+        echo $html;
     }
 
     public  function my_task_plugin_setting_sheet_field()

@@ -11,10 +11,6 @@ use \inc\Base\BaseController;
 class SettingLinks extends BaseController
 {
 
-    function __construct()
-    {
-    }
-
     public function register()
     {
         add_filter("plugin_action_links_my-task-plugin", array($this, 'Setting_links'));
