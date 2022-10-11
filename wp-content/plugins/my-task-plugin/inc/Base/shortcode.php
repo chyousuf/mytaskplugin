@@ -31,19 +31,21 @@ function google_spread_sheet_api($spread_sheet_Id, $spread_sheet_name, $spread_s
     try {
         $response = $service->spreadsheets_values->get($spreadsheetId, $range);
         $values = $response->getValues();
-        echo '<table>';
+        $html = '';
+        $html .=  '<table>';
         $i = 0;
         foreach ($values as $key => $valuez) {
             foreach ($valuez as $key => $value) {
                 if ($i == 0) {
-                    echo  '<tr><th>' . $value . '</th></tr>';
+                    $html .= '<tr><th>' . $value . '</th></tr>';
                 } else {
-                    echo '<tr><td>' . $value . '</td></tr>';
+                    $html .=  '<tr><td>' . $value . '</td></tr>';
                 }
                 $i++;
             }
         }
-        echo '</table>';
+        $html .=  '</table>';
+        return $html;
     }
     //catch exception
     catch (Exception $e) {
@@ -104,6 +106,7 @@ if (!is_admin()) {
             'spread_sheet_range' => $spread_sheet_Range
         ), $atts));
 
-        google_spread_sheet_api($spread_sheet_Id, $spread_sheet_name, $spread_sheet_Range);
+        $output = google_spread_sheet_api($spread_sheet_Id, $spread_sheet_name, $spread_sheet_Range);
+        return $output;
     }
 }
